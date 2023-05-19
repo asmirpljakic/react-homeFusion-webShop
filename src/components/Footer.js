@@ -5,9 +5,20 @@ const Footer = () => {
     <Wrapper>
       <h5>
         &copy; {new Date().getFullYear()}
-        <span> HomeFusion</span>
+        <a href='https://github.com/asmirpljakic' target='_blank'>
+          <span> HomeFusion</span>
+        </a>
       </h5>
-      <h5>All rights reserved </h5>
+      <h5>
+        made by
+        <a
+          href='https://www.linkedin.com/in/asmir-pljakic-967b00227/'
+          target='_blank'
+        >
+          <span> Asmir Pljakić</span>
+        </a>
+        . All rights reserved.
+      </h5>
     </Wrapper>
   );
 };
