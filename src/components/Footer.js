@@ -17,7 +17,7 @@ const Footer = () => {
         >
           <span> Asmir Pljakić</span>
         </a>
-        . All Rights Reserved
+        . All Rights Reserved.
       </h5>
     </Wrapper>
   );
