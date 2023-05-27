@@ -13,6 +13,7 @@ import {
 } from './pages';
 
 function App() {
+  
   return (
     <Router>
       <Navbar />
