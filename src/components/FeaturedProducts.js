@@ -19,6 +19,7 @@ const FeaturedProducts = () => {
   if (error) {
     return <Error />;
   }
+
   return (
     <Wrapper className='section'>
       <div className='title'>
@@ -30,6 +31,9 @@ const FeaturedProducts = () => {
           })}
         </div>
       </div>
+      <Link to='/products' className='btn'>
+        all products
+      </Link>
     </Wrapper>
   );
 };
