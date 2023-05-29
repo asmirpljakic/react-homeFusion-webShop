@@ -13,7 +13,6 @@ import {
 } from '../components';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-import ErrorPage from './ErrorPage';
 
 const SingleProductPage = () => {
   const { id } = useParams();
