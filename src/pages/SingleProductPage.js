@@ -13,6 +13,7 @@ import {
 } from '../components';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
+// 3: Ovde brisemo: 'import ErrorPage from './ErrorPage';'
 
 const SingleProductPage = () => {
   const { id } = useParams();
@@ -26,6 +27,7 @@ const SingleProductPage = () => {
 
   useEffect(() => {
     fetchSingleProduct(`${url}${id}`);
+    // eslint-disable-next-line
   }, [id]);
 
   useEffect(() => {
@@ -34,6 +36,7 @@ const SingleProductPage = () => {
         navigate('/');
       }, 2200);
     }
+    // eslint-disable-next-line
   }, [error]);
 
   // LOADER/SPINER
