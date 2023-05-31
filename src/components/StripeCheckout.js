@@ -44,7 +44,51 @@ const CheckoutForm = () => {
     },
   };
 
-  return <h4>hello from Stripe Checkout </h4>;
+  const createPraymentIntent = async () => {
+    try {
+      const data = await axios.post(
+        '/.netlify/functions/create-payment-intent',
+        JSON.stringify({ cart, shipping_fee, total_amount })
+      );
+    } catch (error) {}
+  };
+
+  useEffect(() => {
+    createPraymentIntent();
+    // eslint-disable-next-line
+  }, []);
+
+  const handleChange = async event => {};
+  const handleSubmit = async ev => {};
+
+  return (
+    <div>
+      <form id='payment-form' onSubmit={handleSubmit}>
+        <CardElement
+          id='card-element'
+          options={cardStyle}
+          onChange={handleChange}
+        />
+        <button disabled={processing || disabled || succeeded} id='submit'>
+          <span id='button-text'>
+            {processing ? <div className='spinner' id='spinner'></div> : 'Pay'}
+          </span>
+        </button>
+        {error && (
+          <div className='card-error' role='alert'>
+            {error}
+          </div>
+        )}
+        <p className={succeeded ? 'result-message' : 'result-message hidden'}>
+          Payment succeeded, see the result in your{' '}
+          <a href={`https://dashboard.stripe.com/test/payments`}>
+            Stripe dashboard.
+          </a>
+          Refresh the page to pay again
+        </p>
+      </form>
+    </div>
+  );
 };
 
 const StripeCheckout = () => {
