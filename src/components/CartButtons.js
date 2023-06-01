@@ -24,7 +24,11 @@ const CartButtons = () => {
         <button
           type='button'
           className='auth-btn'
-          onClick={() => logout({ returnTo: window.location.origin })}
+          onClick={() => {
+            clearCart()
+            localStorage.removeItem('user')
+            logout({ returnTo: window.location.origin })
+          }}
         >
           Logout <FaUserMinus />
         </button>
