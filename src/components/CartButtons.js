@@ -5,14 +5,12 @@ import styled from 'styled-components';
 import { useProductsContext } from '../context/products_context';
 import { useCartContext } from '../context/cart_context';
 import { useUserContext } from '../context/user_context';
-
-const CartButtons = () => {
+const CartButton = () => {
   const { closeSidebar } = useProductsContext();
-  const { total_items } = useCartContext();
+  const { total_items, clearCart } = useCartContext();
   const { loginWithRedirect, myUser, logout } = useUserContext();
-
   return (
-     <Wrapper className='cart-btn-wrapper'>
+    <Wrapper className='cart-btn-wrapper'>
       <Link to='/cart' className='cart-btn' onClick={closeSidebar}>
         Cart
         <span className='cart-container'>
@@ -94,4 +92,4 @@ const Wrapper = styled.div`
     }
   }
 `;
-export default CartButtons;
+export default CartButton;
