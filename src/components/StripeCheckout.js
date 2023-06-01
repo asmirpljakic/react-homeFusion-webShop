@@ -12,7 +12,6 @@ import { useCartContext } from '../context/cart_context';
 import { useUserContext } from '../context/user_context';
 import { formatPrice } from '../utils/helpers';
 import { useNavigate } from 'react-router-dom';
-
 const promise = loadStripe(process.env.REACT_APP_STRIPE_PUBLIC_KEY);
 
 const CheckoutForm = () => {
@@ -26,23 +25,6 @@ const CheckoutForm = () => {
   const [clientSecret, setClientSecret] = useState('');
   const stripe = useStripe();
   const elements = useElements();
-
-  const createPaymentIntent = async () => {
-    try {
-      const { data } = await axios.post(
-        '/.netlify/functions/create-payment-intent',
-
-        JSON.stringify({ cart, shipping_fee, total_amount })
-      );
-      setClientSecret(data.clientSecret);
-    } catch (error) {
-      // console.log(error.response)
-    }
-  };
-  useEffect(() => {
-    createPaymentIntent();
-    // eslint-disable-next-line
-  }, []);
 
   const cardStyle = {
     style: {
@@ -61,13 +43,27 @@ const CheckoutForm = () => {
       },
     },
   };
-  const handleChange = async (event) => {
-    // Listen for changes in the CardElement
-    // and display any errors as the customer types their card details
+
+  const createPraymentIntent = async () => {
+    try {
+      const { data } = await axios.post(
+        '/.netlify/functions/create-payment-intent',
+        JSON.stringify({ cart, shipping_fee, total_amount })
+      );
+      setClientSecret(data.clientSecret);
+    } catch (error) {}
+  };
+
+  useEffect(() => {
+    createPraymentIntent();
+    // eslint-disable-next-line
+  }, []);
+
+  const handleChange = async event => {
     setDisabled(event.empty);
     setError(event.error ? event.error.message : '');
   };
-  const handleSubmit = async (ev) => {
+  const handleSubmit = async ev => {
     ev.preventDefault();
     setProcessing(true);
     const payload = await stripe.confirmCardPayment(clientSecret, {
@@ -76,7 +72,7 @@ const CheckoutForm = () => {
       },
     });
     if (payload.error) {
-      setError(`Payment failed ${payload.error.message}`);
+      setError(`Payment failded ${payload.error.message}`);
       setProcessing(false);
     } else {
       setError(null);
@@ -85,9 +81,10 @@ const CheckoutForm = () => {
       setTimeout(() => {
         clearCart();
         navigate('/');
-      }, 10000);
+      }, 5000);
     }
   };
+
   return (
     <div>
       {succeeded ? (
@@ -99,8 +96,8 @@ const CheckoutForm = () => {
       ) : (
         <article>
           <h4>Hello, {myUser && myUser.name}</h4>
-          <p>Your total is {formatPrice(total_amount)}</p>
-          <p>Test Card Number: 4242 4242 4242 4242</p>
+          <p>Your total is {formatPrice(shipping_fee + total_amount)}</p>
+          <p>Test Card Number : 4242 4242 4242 4242</p>
         </article>
       )}
       <form id='payment-form' onSubmit={handleSubmit}>
@@ -114,20 +111,17 @@ const CheckoutForm = () => {
             {processing ? <div className='spinner' id='spinner'></div> : 'Pay'}
           </span>
         </button>
-        {/* Show any error that happens when processing the payment */}
         {error && (
           <div className='card-error' role='alert'>
             {error}
           </div>
         )}
-        {/* Show a success message upon completion */}
         <p className={succeeded ? 'result-message' : 'result-message hidden'}>
-          Payment succeeded, see the result in your
+          Payment succeeded, see the result in your{' '}
           <a href={`https://dashboard.stripe.com/test/payments`}>
-            {' '}
             Stripe dashboard.
-          </a>{' '}
-          Refresh the page to pay again.
+          </a>
+          Refresh the page to pay again
         </p>
       </form>
     </div>
