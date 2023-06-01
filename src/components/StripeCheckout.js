@@ -46,10 +46,11 @@ const CheckoutForm = () => {
 
   const createPraymentIntent = async () => {
     try {
-      const data = await axios.post(
+      const { data } = await axios.post(
         '/.netlify/functions/create-payment-intent',
         JSON.stringify({ cart, shipping_fee, total_amount })
       );
+      setClientSecret(data.clientSecret);
     } catch (error) {}
   };
 
